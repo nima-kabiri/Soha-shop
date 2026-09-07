@@ -1,0 +1,202 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --ink: #0B1F21;
+  --panel: #122E31;
+  --panel-2: #1B4145;
+  --gold: #C9A24A;
+  --gold-soft: rgba(201, 162, 74, 0.14);
+  --cream: #F3EFE6;
+  --muted: #92ACAE;
+  --danger: #D9695F;
+  --success: #6FAE8B;
+  --radius: 12px;
+}
+
+body {
+  font-family: 'Vazirmatn', sans-serif;
+  background: var(--ink);
+  color: var(--cream);
+  min-height: 100vh;
+}
+
+input, select, button { font-family: inherit; }
+
+/* ===== صفحه ورود ===== */
+.login-screen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.login-card {
+  background: var(--panel);
+  border: 1px solid var(--panel-2);
+  border-radius: var(--radius);
+  padding: 40px;
+  width: 100%;
+  max-width: 380px;
+  text-align: center;
+}
+.login-mark { color: var(--gold); display: flex; justify-content: center; margin-bottom: 18px; }
+.login-card h1 { font-size: 1.3rem; margin-bottom: 4px; }
+.login-sub { color: var(--muted); font-size: 0.9rem; margin-bottom: 28px; }
+.login-card label { display: block; text-align: right; font-size: 0.85rem; color: var(--muted); margin-bottom: 6px; }
+.login-card input {
+  width: 100%;
+  background: var(--ink);
+  border: 1px solid var(--panel-2);
+  color: var(--cream);
+  border-radius: 9px;
+  padding: 12px 14px;
+  margin-bottom: 18px;
+}
+.login-card input:focus { outline: none; border-color: var(--gold); }
+.login-error { color: var(--danger); font-size: 0.85rem; margin-bottom: 12px; }
+.login-card button {
+  width: 100%;
+  background: var(--gold);
+  color: var(--ink);
+  border: none;
+  padding: 13px;
+  border-radius: 9px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* ===== لایوت اصلی پنل ===== */
+.dashboard { display: flex; min-height: 100vh; }
+
+.sidebar {
+  width: 220px;
+  background: var(--panel);
+  border-left: 1px solid var(--panel-2);
+  display: flex;
+  flex-direction: column;
+  padding: 26px 18px;
+  flex-shrink: 0;
+}
+.sidebar-brand { font-weight: 900; font-size: 1.1rem; margin-bottom: 30px; padding: 0 8px; }
+.sidebar-brand em { color: var(--gold); font-style: normal; font-weight: 400; }
+.sidebar-nav { display: flex; flex-direction: column; gap: 4px; flex: 1; }
+.nav-item {
+  background: none;
+  border: none;
+  color: var(--muted);
+  text-align: right;
+  padding: 12px 14px;
+  border-radius: 9px;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+.nav-item:hover { background: var(--panel-2); color: var(--cream); }
+.nav-item.active { background: var(--gold-soft); color: var(--gold); font-weight: 700; }
+.logout-btn {
+  background: none;
+  border: 1px solid var(--panel-2);
+  color: var(--muted);
+  padding: 11px;
+  border-radius: 9px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+.logout-btn:hover { border-color: var(--danger); color: var(--danger); }
+
+.main-content { flex: 1; padding: 32px 40px; overflow-x: auto; }
+.view { display: none; }
+.view.active { display: block; }
+.view h2 { font-size: 1.4rem; font-weight: 900; margin-bottom: 24px; }
+
+.view-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; }
+.view-header input, .view-header select {
+  background: var(--panel);
+  border: 1px solid var(--panel-2);
+  color: var(--cream);
+  padding: 10px 14px;
+  border-radius: 9px;
+}
+
+/* ===== کارت‌های آماری ===== */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  margin-bottom: 30px;
+}
+.stat-card {
+  background: var(--panel);
+  border: 1px solid var(--panel-2);
+  border-radius: var(--radius);
+  padding: 22px;
+}
+.stat-card.highlight { border-color: var(--gold); }
+.stat-label { display: block; color: var(--muted); font-size: 0.85rem; margin-bottom: 8px; }
+.stat-value { font-size: 1.7rem; font-weight: 900; }
+.stat-card.highlight .stat-value { color: var(--gold); }
+
+.panel-box {
+  background: var(--panel);
+  border: 1px solid var(--panel-2);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 20px;
+}
+.panel-box h3 { font-size: 1.05rem; margin-bottom: 16px; }
+
+/* نمودار ساده میله‌ای بدون کتابخانه */
+.mini-chart { display: flex; align-items: flex-end; gap: 10px; height: 140px; }
+.mini-chart .bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; }
+.mini-chart .bar { width: 100%; background: var(--gold); border-radius: 5px 5px 0 0; min-height: 4px; }
+.mini-chart .bar-label { color: var(--muted); font-size: 0.72rem; margin-top: 6px; }
+
+.rates-list { display: flex; flex-wrap: wrap; gap: 12px; }
+.rate-chip { background: var(--ink); border: 1px solid var(--panel-2); border-radius: 9px; padding: 10px 16px; font-size: 0.9rem; }
+.rate-chip b { color: var(--gold); }
+
+/* ===== جدول‌ها ===== */
+.table-wrap { background: var(--panel); border: 1px solid var(--panel-2); border-radius: var(--radius); overflow: hidden; }
+table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+thead { background: var(--panel-2); }
+th, td { padding: 13px 16px; text-align: right; }
+tbody tr { border-top: 1px solid var(--panel-2); }
+tbody tr:hover { background: rgba(255,255,255,0.02); }
+td img { width: 40px; height: 40px; object-fit: cover; border-radius: 6px; }
+.status-badge { padding: 4px 10px; border-radius: 999px; font-size: 0.78rem; }
+.status-pending { background: rgba(201,162,74,0.15); color: var(--gold); }
+.status-confirmed, .status-delivered { background: rgba(111,174,139,0.15); color: var(--success); }
+.status-cancelled { background: rgba(217,105,95,0.15); color: var(--danger); }
+.status-shipped { background: rgba(146,172,174,0.15); color: var(--muted); }
+.row-btn { background: none; border: 1px solid var(--panel-2); color: var(--muted); padding: 5px 10px; border-radius: 7px; cursor: pointer; font-size: 0.8rem; }
+.row-btn:hover { color: var(--cream); border-color: var(--gold); }
+
+/* ===== فرم تنظیمات ===== */
+.settings-form label, .panel-box label { display: block; color: var(--muted); font-size: 0.85rem; margin-bottom: 6px; }
+.settings-form input, .panel-box input {
+  width: 100%;
+  max-width: 320px;
+  background: var(--ink);
+  border: 1px solid var(--panel-2);
+  color: var(--cream);
+  padding: 11px 14px;
+  border-radius: 9px;
+  margin-bottom: 18px;
+}
+.settings-form button, .panel-box button {
+  background: var(--gold);
+  color: var(--ink);
+  border: none;
+  padding: 11px 24px;
+  border-radius: 9px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.settings-note { margin-top: 10px; font-size: 0.85rem; color: var(--success); }
+
+@media (max-width: 800px) {
+  .dashboard { flex-direction: column; }
+  .sidebar { width: 100%; flex-direction: row; overflow-x: auto; align-items: center; }
+  .sidebar-nav { flex-direction: row; }
+  .logout-btn { margin: 0 0 0 10px; }
+  .main-content { padding: 20px; }
+}

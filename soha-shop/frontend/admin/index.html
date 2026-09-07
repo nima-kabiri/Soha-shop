@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>پنل مدیریت — Soha Luxury Shop</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ===== صفحه ورود ===== -->
+<div id="loginScreen" class="login-screen">
+  <form id="loginForm" class="login-card">
+    <div class="login-mark" aria-hidden="true">
+      <svg viewBox="0 0 60 60" width="40" height="40">
+        <circle cx="30" cy="14" r="5" fill="none" stroke="currentColor" stroke-width="2"/>
+        <circle cx="30" cy="14" r="1.6" fill="currentColor"/>
+        <path d="M30 19 L30 34 M30 34 L16 46 M30 34 L44 46" stroke="currentColor" stroke-width="1.6" fill="none"/>
+        <circle cx="16" cy="46" r="3.4" fill="none" stroke="currentColor" stroke-width="1.6"/>
+        <circle cx="44" cy="46" r="3.4" fill="none" stroke="currentColor" stroke-width="1.6"/>
+      </svg>
+    </div>
+    <h1>ورود به پنل مدیریت</h1>
+    <p class="login-sub">Soha Luxury Shop</p>
+
+    <label for="username">نام کاربری</label>
+    <input type="text" id="username" required autocomplete="username">
+
+    <label for="password">رمز عبور</label>
+    <input type="password" id="password" required autocomplete="current-password">
+
+    <p class="login-error" id="loginError" hidden></p>
+
+    <button type="submit" id="loginBtn">ورود</button>
+  </form>
+</div>
+
+<!-- ===== پنل اصلی (بعد از ورود) ===== -->
+<div id="dashboard" class="dashboard" hidden>
+
+  <aside class="sidebar">
+    <div class="sidebar-brand">Soha <em>Admin</em></div>
+    <nav class="sidebar-nav">
+      <button class="nav-item active" data-view="overview">📊 داشبورد</button>
+      <button class="nav-item" data-view="products">🛍️ محصولات</button>
+      <button class="nav-item" data-view="orders">📦 سفارش‌ها</button>
+      <button class="nav-item" data-view="customers">👥 مشتریان</button>
+      <button class="nav-item" data-view="settings">⚙️ تنظیمات</button>
+    </nav>
+    <button id="logoutBtn" class="logout-btn">خروج از پنل</button>
+  </aside>
+
+  <main class="main-content">
+
+    <!-- ===== نمای داشبورد ===== -->
+    <section id="view-overview" class="view active">
+      <h2>داشبورد کلی</h2>
+      <div class="stat-grid">
+        <div class="stat-card">
+          <span class="stat-label">تعداد محصولات</span>
+          <span class="stat-value" id="statProducts">—</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">تعداد مشتریان</span>
+          <span class="stat-value" id="statCustomers">—</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">کل سفارش‌ها</span>
+          <span class="stat-value" id="statOrders">—</span>
+        </div>
+        <div class="stat-card highlight">
+          <span class="stat-label">درآمد کل (تومان)</span>
+          <span class="stat-value" id="statRevenue">—</span>
+        </div>
+      </div>
+
+      <div class="panel-box">
+        <h3>سفارش‌های ۷ روز اخیر</h3>
+        <div id="revenueChart" class="mini-chart"></div>
+      </div>
+
+      <div class="panel-box">
+        <h3>نرخ ارز فعلی</h3>
+        <div id="ratesTable" class="rates-list"></div>
+      </div>
+    </section>
+
+    <!-- ===== نمای محصولات ===== -->
+    <section id="view-products" class="view">
+      <div class="view-header">
+        <h2>مدیریت محصولات</h2>
+        <input type="search" id="productSearch" placeholder="جستجوی محصول...">
+      </div>
+      <div class="table-wrap">
+        <table id="productsTable">
+          <thead>
+            <tr>
+              <th>عکس</th><th>نام محصول</th><th>منبع</th><th>قیمت اصلی</th><th>قیمت (تومان)</th><th>موجودی</th><th>عملیات</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ===== نمای سفارش‌ها ===== -->
+    <section id="view-orders" class="view">
+      <div class="view-header">
+        <h2>سفارش‌ها</h2>
+        <select id="orderStatusFilter">
+          <option value="">همه وضعیت‌ها</option>
+          <option value="pending">در انتظار</option>
+          <option value="confirmed">تایید شده</option>
+          <option value="shipped">ارسال شده</option>
+          <option value="delivered">تحویل شده</option>
+          <option value="cancelled">لغو شده</option>
+        </select>
+      </div>
+      <div class="table-wrap">
+        <table id="ordersTable">
+          <thead>
+            <tr>
+              <th>#</th><th>مشتری</th><th>تماس</th><th>محصول</th><th>مبلغ (تومان)</th><th>وضعیت</th><th>تاریخ</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ===== نمای مشتریان ===== -->
+    <section id="view-customers" class="view">
+      <div class="view-header">
+        <h2>مشتریان</h2>
+        <input type="search" id="customerSearch" placeholder="جستجوی مشتری...">
+      </div>
+      <div class="table-wrap">
+        <table id="customersTable">
+          <thead>
+            <tr><th>نام</th><th>تماس</th><th>تعداد سفارش</th><th>مجموع خرید (تومان)</th><th>عضویت</th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ===== نمای تنظیمات ===== -->
+    <section id="view-settings" class="view">
+      <h2>تنظیمات فروشگاه</h2>
+      <div class="panel-box settings-form">
+        <label>ضریب سود (مثلاً 1.15 یعنی ۱۵٪ سود)</label>
+        <input type="number" step="0.01" id="setProfitMargin">
+
+        <label>هزینه ارسال به ازای هر کیلوگرم (تومان)</label>
+        <input type="number" id="setShippingCost">
+
+        <label>نرخ دلار به تومان (چون در API جهانی نیست، دستی وارد کنید)</label>
+        <input type="number" id="setUsdToToman">
+
+        <button id="saveSettingsBtn">ذخیره تنظیمات</button>
+        <p class="settings-note" id="settingsNote"></p>
+      </div>
+
+      <div class="panel-box">
+        <h3>تغییر رمز عبور</h3>
+        <label>رمز عبور جدید</label>
+        <input type="password" id="newPassword" placeholder="حداقل ۶ کاراکتر">
+        <button id="changePasswordBtn">تغییر رمز</button>
+        <p class="settings-note" id="passwordNote"></p>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script src="js/app.js"></script>
+</body>
+</html>

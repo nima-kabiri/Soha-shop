@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Soha Luxury Shop — قیمت لحظه‌ای، شفاف و به تومان</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 60 60" width="34" height="34">
+          <circle cx="30" cy="14" r="5" fill="none" stroke="currentColor" stroke-width="2"/>
+          <circle cx="30" cy="14" r="1.6" fill="currentColor"/>
+          <path d="M30 19 L30 34 M30 34 L16 46 M30 34 L44 46" stroke="currentColor" stroke-width="1.6" fill="none"/>
+          <circle cx="16" cy="46" r="3.4" fill="none" stroke="currentColor" stroke-width="1.6"/>
+          <circle cx="44" cy="46" r="3.4" fill="none" stroke="currentColor" stroke-width="1.6"/>
+        </svg>
+      </span>
+      <span class="brand-name">Soha <em>Luxury</em></span>
+    </div>
+    <nav class="header-nav">
+      <a href="#calculator">محاسبه قیمت</a>
+      <a href="#collection">کالکشن جدید</a>
+      <a href="#" class="nav-cta">ورود / ثبت‌نام</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-sunburst" aria-hidden="true"></div>
+  <div class="hero-inner">
+    <p class="hero-kicker">دبی · لندن · میلان · استانبول</p>
+    <h1>قیمت واقعیِ برندهای اروپا،<br>همین امروز، به تومان.</h1>
+    <p class="hero-sub">لینک محصول را بگذارید؛ کشور، ارز و قیمت را خودمان می‌خوانیم — بدون حدس، بدون تأخیر.</p>
+    <a href="#calculator" class="hero-btn">محاسبه کن</a>
+  </div>
+</section>
+
+<section id="calculator" class="calculator-section">
+  <div class="section-head">
+    <h2>قیمت خرید از فروشگاه‌های خارجی، شفاف و به تومان</h2>
+    <p>لینک محصول را بگذارید؛ کشور، ارز و قیمت خودکار خوانده می‌شود.</p>
+  </div>
+
+  <div class="calc-card">
+    <label for="productUrl">لینک محصول</label>
+    <input type="url" id="productUrl" placeholder="https://...">
+
+    <label for="weightKg">وزن تخمینی (کیلوگرم)</label>
+    <input type="number" id="weightKg" value="1" min="0.1" step="0.1">
+
+    <div class="calc-divider"></div>
+
+    <div class="calc-result">
+      <span class="result-label">مبلغ تخمینی نهایی</span>
+      <span class="result-amount" id="resultAmount">—</span>
+      <span class="result-unit">تومان</span>
+    </div>
+    <p class="calc-note" id="calcNote">
+      برای دیدن مبلغ، لینک محصول را وارد کنید؛ اگر قیمت خودکار خوانده نشد، آن را دستی بنویسید.
+    </p>
+
+    <div class="manual-fallback" id="manualFallback" hidden>
+      <label for="manualPrice">قیمت اصلی محصول</label>
+      <div class="manual-row">
+        <input type="number" id="manualPrice" step="0.01" placeholder="مثلاً 79.99">
+        <select id="manualCurrency">
+          <option value="EUR">یورو (EUR)</option>
+          <option value="GBP">پوند (GBP)</option>
+          <option value="USD">دلار (USD)</option>
+          <option value="AED">درهم (AED)</option>
+          <option value="TRY">لیر ترکیه (TRY)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="customer-fields" id="customerFields" hidden>
+      <label for="customerName">نام و نام‌خانوادگی</label>
+      <input type="text" id="customerName" placeholder="مثلاً سارا محمدی">
+      <label for="customerPhone">شماره تماس</label>
+      <input type="tel" id="customerPhone" placeholder="09xxxxxxxxx">
+    </div>
+
+    <button class="calc-submit" id="calcSubmit">ثبت سفارش</button>
+  </div>
+</section>
+
+<section id="collection" class="collection-section">
+  <div class="section-head">
+    <p class="live-badge"><span class="live-dot"></span> امروز آپدیت شد</p>
+    <h2>تازه‌ترین کالکشن‌ها — دبی، لندن، میلان، استانبول</h2>
+    <p>روی هر محصول بزنید تا جزئیات و قیمت محاسبه‌شده به تومان را ببینید.</p>
+  </div>
+
+  <div class="product-grid" id="productGrid">
+    <!-- محصولات با جاوااسکریپت از API/دیتابیس اینجا رندر می‌شوند -->
+    <p class="grid-loading">در حال بارگذاری محصولات...</p>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <p>Soha Luxury Shop — قیمت‌ها به‌صورت خودکار از منابع رسمی محاسبه می‌شود.</p>
+</footer>
+
+<script src="js/app.js"></script>
+</body>
+</html>
