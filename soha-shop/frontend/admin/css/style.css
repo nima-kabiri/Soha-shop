@@ -193,6 +193,10 @@ td img { width: 40px; height: 40px; object-fit: cover; border-radius: 6px; }
 }
 .settings-note { margin-top: 10px; font-size: 0.85rem; color: var(--success); }
 
+.import-row { display: flex; gap: 10px; }
+.import-row input { flex: 1; max-width: none; margin-bottom: 0; }
+.import-row button { flex-shrink: 0; white-space: nowrap; }
+
 @media (max-width: 800px) {
   .dashboard { flex-direction: column; }
   .sidebar { width: 100%; flex-direction: row; overflow-x: auto; align-items: center; }

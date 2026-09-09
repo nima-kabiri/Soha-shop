@@ -34,6 +34,8 @@ app.use(
 app.use(express.static(path.join(__dirname, '../frontend')));
 // فایل‌های پنل ادمین (جدا از سایت اصلی)
 app.use('/admin', express.static(path.join(__dirname, '../frontend/admin')));
+// عکس‌های دانلود شده از منابع خارجی (مثل ترندیول) - روی هاست خودمون سرو می‌شن
+app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
 
 // روت‌های API
 app.use('/api/admin', adminRoutes);

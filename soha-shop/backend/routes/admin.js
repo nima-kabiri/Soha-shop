@@ -4,6 +4,8 @@ const db = require('../db/database');
 const { getSetting, setSetting } = require('../db/database');
 const { verifyAdminLogin, changeAdminPassword } = require('../services/auth');
 const requireAdmin = require('../middleware/requireAdmin');
+const { importTrendyolProduct } = require('../services/trendyolImporter');
+const { convertToToman } = require('../services/currency');
 
 router.use(express.json());
 
@@ -130,6 +132,55 @@ router.put('/products/:id', (req, res) => {
 router.delete('/products/:id', (req, res) => {
   db.prepare('DELETE FROM products WHERE id = ?').run(req.params.id);
   res.json({ success: true });
+});
+
+// وارد کردن محصول از ترندیول (خودش اسم، قیمت و همه‌ی عکس‌های گالری رو تشخیص می‌ده
+// و عکس‌ها رو روی هاست خودمون ذخیره می‌کنه، نه لینک مستقیم به ترندیول)
+router.post('/products/import-trendyol', async (req, res) => {
+  const { url } = req.body;
+  if (!url) {
+    return res.status(400).json({ success: false, error: 'لینک محصول ترندیول الزامی است.' });
+  }
+
+  try {
+    const imported = await importTrendyolProduct(url);
+
+    let priceToman = null;
+    try {
+      priceToman = convertToToman(imported.price, imported.currency);
+    } catch (err) {
+      console.warn('   ⚠️ نرخ ارز TRY یافت نشد، ابتدا از پنل تنظیمات نرخ‌ها رو آپدیت کنید.');
+    }
+
+    const now = new Date().toISOString();
+    db.prepare(`
+      INSERT INTO products
+        (source_site, source_country, product_name, product_url, image_url, images,
+         original_price, original_currency, price_toman, category, last_checked_at)
+      VALUES ('trendyol', 'turkey', ?, ?, ?, ?, ?, ?, ?, 'trendyol-import', ?)
+      ON CONFLICT(product_url) DO UPDATE SET
+        product_name = excluded.product_name,
+        image_url = excluded.image_url,
+        images = excluded.images,
+        original_price = excluded.original_price,
+        price_toman = excluded.price_toman,
+        last_checked_at = excluded.last_checked_at
+    `).run(
+      imported.name,
+      imported.productUrl,
+      imported.images[0],
+      JSON.stringify(imported.images),
+      imported.price,
+      imported.currency,
+      priceToman,
+      now
+    );
+
+    const product = db.prepare('SELECT * FROM products WHERE product_url = ?').get(imported.productUrl);
+    res.json({ success: true, product });
+  } catch (error) {
+    res.status(400).json({ success: false, error: error.message });
+  }
 });
 
 // ============================================
