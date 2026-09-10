@@ -1,0 +1,6 @@
+node_modules/
+.env
+backend/db/soha.db
+backend/db/soha.db-*
+backend/public/uploads/trendyol/*
+!backend/public/uploads/trendyol/.gitkeep

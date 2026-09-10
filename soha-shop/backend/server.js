@@ -5,6 +5,16 @@ const path = require('path');
 const cron = require('node-cron');
 require('dotenv').config();
 
+// شبکه‌ی ایمنی سراسری: هیچ خطای پیش‌بینی‌نشده (مثلاً یه باگ توی اسکرپر شبانه یا
+// یه promise که reject شده و کسی catch نکرده) نباید کل سایت رو از کار بندازه.
+// به‌جای کرش کردن کل پروسه، خطا رو لاگ می‌کنیم و سرور به کارش ادامه می‌ده.
+process.on('uncaughtException', (err) => {
+  console.error('❌ خطای مدیریت‌نشده (uncaughtException) — سرور همچنان روشن می‌مونه:', err);
+});
+process.on('unhandledRejection', (err) => {
+  console.error('❌ Promise رد شده که کسی catch نکرد (unhandledRejection) — سرور همچنان روشن می‌مونه:', err);
+});
+
 const apiRoutes = require('./routes/api');
 const adminRoutes = require('./routes/admin');
 const { fetchAndSaveRates } = require('./services/currency');
@@ -34,6 +44,8 @@ app.use(
 app.use(express.static(path.join(__dirname, '../frontend')));
 // فایل‌های پنل ادمین (جدا از سایت اصلی)
 app.use('/admin', express.static(path.join(__dirname, '../frontend/admin')));
+// عکس‌های دانلود شده از منابع خارجی (مثل ترندیول) - روی هاست خودمون سرو می‌شن
+app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
 
 // روت‌های API
 app.use('/api/admin', adminRoutes);
@@ -57,14 +69,25 @@ app.listen(PORT, () => {
 // زمان‌بندی خودکار (Cron Jobs)
 // ============================================
 
+// هر تسک زمان‌بندی‌شده تو try/catch خودشه؛ اگه یکی شکست بخوره (مثلاً سایت مقصد
+// در دسترس نبود) فقط همون تسک لاگ خطا می‌ده و بقیه‌ی سایت (فروشگاه، سفارش‌ها، پنل)
+// دست‌نخورده و آنلاین می‌مونه.
 cron.schedule('0 */6 * * *', async () => {
   console.log('\n⏰ [Cron] زمان آپدیت نرخ ارز رسید...');
-  await fetchAndSaveRates();
+  try {
+    await fetchAndSaveRates();
+  } catch (err) {
+    console.error('❌ آپدیت نرخ ارز شکست خورد (سرور همچنان روشنه):', err.message);
+  }
 });
 
 cron.schedule('0 3 * * *', async () => {
   console.log('\n⏰ [Cron] زمان اسکرپ روزانه محصولات رسید...');
-  await runFullScrape();
+  try {
+    await runFullScrape();
+  } catch (err) {
+    console.error('❌ اسکرپ روزانه شکست خورد (سرور همچنان روشنه):', err.message);
+  }
 });
 
 fetchAndSaveRates();
