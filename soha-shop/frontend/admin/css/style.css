@@ -22,39 +22,133 @@ body {
 
 input, select, button { font-family: inherit; }
 
-/* ===== صفحه ورود ===== */
-.login-screen {
+/* ===== صفحه ورود — گاوصندوق ===== */
+.vault-screen {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 24px;
+  perspective: 1600px;
 }
-.login-card {
-  background: var(--panel);
-  border: 1px solid var(--panel-2);
-  border-radius: var(--radius);
-  padding: 40px;
+
+.vault-box {
+  position: relative;
   width: 100%;
-  max-width: 380px;
+  max-width: 640px;
+  border-radius: 18px;
+  padding: 10px;
+  background:
+    repeating-linear-gradient(135deg, rgba(255,255,255,0.05) 0 2px, transparent 2px 6px),
+    linear-gradient(155deg, #2b3436 0%, #171d1e 45%, #0d1112 100%);
+  box-shadow:
+    0 20px 50px rgba(0,0,0,0.55),
+    inset 0 0 0 1px rgba(255,255,255,0.06);
+  transition: box-shadow 0.25s ease;
+}
+
+.vault-box.wrong {
+  animation: vault-shake 0.5s ease;
+  box-shadow:
+    0 0 0 3px rgba(217,105,95,0.55),
+    0 0 34px 6px rgba(217,105,95,0.55),
+    0 20px 50px rgba(0,0,0,0.55);
+}
+
+@keyframes vault-shake {
+  0%, 100% { transform: translateX(0); }
+  15% { transform: translateX(-10px); }
+  30% { transform: translateX(9px); }
+  45% { transform: translateX(-7px); }
+  60% { transform: translateX(6px); }
+  75% { transform: translateX(-4px); }
+  90% { transform: translateX(2px); }
+}
+
+.rivet {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #e6d3a1, #8a723a 55%, #4a3c1c 100%);
+  box-shadow: inset 0 0 2px rgba(0,0,0,0.6);
+  z-index: 3;
+}
+.rv-tl { top: 14px; left: 14px; }
+.rv-tr { top: 14px; right: 14px; }
+.rv-bl { bottom: 14px; left: 14px; }
+.rv-br { bottom: 14px; right: 14px; }
+.rv-tm { top: 14px; left: 50%; transform: translateX(-50%); }
+.rv-bm { bottom: 14px; left: 50%; transform: translateX(-50%); }
+
+.vault-hinges {
+  position: absolute;
+  top: 0;
+  right: -8px;
+  height: 100%;
+  width: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  z-index: 4;
+  pointer-events: none;
+}
+.hinge {
+  width: 22px;
+  height: 46px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #3a4143, #17191a);
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.5), inset 0 0 4px rgba(255,255,255,0.08);
+}
+
+.vault-door {
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  transform-style: preserve-3d;
+  transform-origin: right center;
+  transition: transform 0.9s cubic-bezier(0.6, 0, 0.2, 1);
+}
+.vault-door.open { transform: rotateY(-108deg); }
+
+.vault-face {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  background: linear-gradient(160deg, #1c2426 0%, #10171818 60%, #0c1213 100%);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 14px;
+}
+
+.vault-panel-left {
+  flex: 1 1 260px;
+  padding: 34px 30px;
   text-align: center;
 }
-.login-mark { color: var(--gold); display: flex; justify-content: center; margin-bottom: 18px; }
-.login-card h1 { font-size: 1.3rem; margin-bottom: 4px; }
-.login-sub { color: var(--muted); font-size: 0.9rem; margin-bottom: 28px; }
-.login-card label { display: block; text-align: right; font-size: 0.85rem; color: var(--muted); margin-bottom: 6px; }
-.login-card input {
+.vault-panel-left h1 {
+  color: var(--gold);
+  font-family: 'Vazirmatn', sans-serif;
+  letter-spacing: 2px;
+  font-size: 1.4rem;
+  margin-bottom: 4px;
+}
+.vault-sub { color: var(--muted); font-size: 0.85rem; margin-bottom: 22px; }
+
+.vault-form label { display: block; text-align: right; font-size: 0.85rem; color: var(--muted); margin-bottom: 6px; }
+.vault-form input {
   width: 100%;
   background: var(--ink);
   border: 1px solid var(--panel-2);
   color: var(--cream);
   border-radius: 9px;
   padding: 12px 14px;
-  margin-bottom: 18px;
+  margin-bottom: 16px;
+  letter-spacing: 2px;
 }
-.login-card input:focus { outline: none; border-color: var(--gold); }
+.vault-form input:focus { outline: none; border-color: var(--gold); }
 .login-error { color: var(--danger); font-size: 0.85rem; margin-bottom: 12px; }
-.login-card button {
+.vault-form button {
   width: 100%;
   background: var(--gold);
   color: var(--ink);
@@ -62,7 +156,43 @@ input, select, button { font-family: inherit; }
   padding: 13px;
   border-radius: 9px;
   font-weight: 700;
+  letter-spacing: 1px;
   cursor: pointer;
+}
+.vault-form button:hover { filter: brightness(1.08); }
+
+.vault-panel-right {
+  flex: 0 0 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: radial-gradient(circle at 50% 50%, rgba(201,162,74,0.06), transparent 70%);
+}
+.vault-dial { width: 160px; height: 160px; }
+.dial-rim { fill: none; stroke: #3c4547; stroke-width: 6; }
+.dial-face { fill: #171d1e; stroke: var(--gold); stroke-width: 1.5; }
+.dial-teeth rect { fill: var(--gold); opacity: 0.85; }
+.dial-knob { fill: var(--gold); }
+.dial-pointer { fill: var(--danger); }
+#dialGroup {
+  transform-origin: 100px 100px;
+  transition: transform 0.28s ease-out;
+}
+#dialGroup.spin {
+  transition: transform 0.85s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@media (max-width: 560px) {
+  .vault-panel-right { flex: 0 0 100%; }
+  .vault-dial { width: 130px; height: 130px; }
+  .vault-hinges { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vault-box.wrong { animation: none; }
+  .vault-door { transition: none; }
+  #dialGroup, #dialGroup.spin { transition: none; }
 }
 
 /* ===== لایوت اصلی پنل ===== */

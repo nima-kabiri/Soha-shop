@@ -4,6 +4,20 @@ const loginScreen = document.getElementById('loginScreen');
 const dashboard = document.getElementById('dashboard');
 const loginForm = document.getElementById('loginForm');
 const loginError = document.getElementById('loginError');
+const vaultBox = document.getElementById('vaultBox');
+const vaultDoor = document.getElementById('vaultDoor');
+const dialGroup = document.getElementById('dialGroup');
+const passwordInput = document.getElementById('password');
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// ===== چرخش دستگیره گاوصندوق موقع تایپ رمز =====
+let dialRotation = 0;
+if (passwordInput && dialGroup) {
+  passwordInput.addEventListener('input', () => {
+    dialRotation += 47;
+    dialGroup.style.transform = `rotate(${dialRotation}deg)`;
+  });
+}
 
 // ===== بررسی وضعیت ورود موقع بارگذاری صفحه =====
 async function checkAuth() {
@@ -47,17 +61,51 @@ loginForm.addEventListener('submit', async (e) => {
     const data = await res.json();
 
     if (data.success) {
-      showDashboard();
-      loadOverview();
+      unlockVault();
     } else {
       loginError.textContent = data.error;
       loginError.hidden = false;
+      shakeVault();
     }
   } catch {
     loginError.textContent = 'اتصال به سرور برقرار نشد.';
     loginError.hidden = false;
+    shakeVault();
   }
 });
+
+// ===== لرزش + هاله قرمز موقع رمز اشتباه =====
+function shakeVault() {
+  if (!vaultBox) return;
+  if (reducedMotion) return;
+  vaultBox.classList.remove('wrong');
+  // اجبار به ری‌فلو تا انیمیشن دوباره اجرا بشه
+  void vaultBox.offsetWidth;
+  vaultBox.classList.add('wrong');
+  setTimeout(() => vaultBox.classList.remove('wrong'), 500);
+}
+
+// ===== چرخش سریع دستگیره + باز شدن در موقع رمز درست =====
+function unlockVault() {
+  if (reducedMotion || !dialGroup || !vaultDoor) {
+    showDashboard();
+    loadOverview();
+    return;
+  }
+
+  dialGroup.classList.add('spin');
+  dialRotation += 720;
+  dialGroup.style.transform = `rotate(${dialRotation}deg)`;
+
+  setTimeout(() => {
+    vaultDoor.classList.add('open');
+  }, 500);
+
+  setTimeout(() => {
+    showDashboard();
+    loadOverview();
+  }, 1450);
+}
 
 // ===== خروج =====
 document.getElementById('logoutBtn').addEventListener('click', async () => {

@@ -4,6 +4,7 @@ const db = require('../db/database');
 const { getSetting, setSetting } = require('../db/database');
 const { verifyAdminLogin, changeAdminPassword } = require('../services/auth');
 const requireAdmin = require('../middleware/requireAdmin');
+const loginRateLimit = require('../middleware/loginRateLimit');
 
 router.use(express.json());
 
@@ -11,7 +12,7 @@ router.use(express.json());
 // احراز هویت
 // ============================================
 
-router.post('/login', (req, res) => {
+router.post('/login', loginRateLimit, (req, res) => {
   const { username, password } = req.body;
   const admin = verifyAdminLogin(username, password);
 
