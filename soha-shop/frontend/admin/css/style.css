@@ -30,6 +30,8 @@ input, select, button { font-family: inherit; }
   justify-content: center;
   padding: 24px;
   perspective: 1600px;
+  background-image: radial-gradient(rgba(255,255,255,0.06) 1px, transparent 1px);
+  background-size: 16px 16px;
 }
 
 .vault-box {
@@ -147,6 +149,10 @@ input, select, button { font-family: inherit; }
   letter-spacing: 2px;
 }
 .vault-form input:focus { outline: none; border-color: var(--gold); }
+.vault-form input[type="password"] {
+  box-shadow: inset 0 2px 6px rgba(0,0,0,0.5);
+  background: #08161780;
+}
 .login-error { color: var(--danger); font-size: 0.85rem; margin-bottom: 12px; }
 .vault-form button {
   width: 100%;
@@ -172,9 +178,10 @@ input, select, button { font-family: inherit; }
 .vault-dial { width: 160px; height: 160px; }
 .dial-rim { fill: none; stroke: #3c4547; stroke-width: 6; }
 .dial-face { fill: #171d1e; stroke: var(--gold); stroke-width: 1.5; }
-.dial-teeth rect { fill: var(--gold); opacity: 0.85; }
+.dial-teeth rect { fill: var(--gold); opacity: 0.6; }
+.dial-spokes rect { fill: #3c4547; }
 .dial-knob { fill: var(--gold); }
-.dial-pointer { fill: var(--danger); }
+.dial-bolt { fill: #171d1e; stroke: var(--gold); stroke-width: 1; }
 #dialGroup {
   transform-origin: 100px 100px;
   transition: transform 0.28s ease-out;
