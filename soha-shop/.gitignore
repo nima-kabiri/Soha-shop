@@ -4,3 +4,5 @@ backend/db/soha.db
 backend/db/soha.db-*
 backend/public/uploads/trendyol/*
 !backend/public/uploads/trendyol/.gitkeep
+backend/public/uploads/zara/*
+!backend/public/uploads/zara/.gitkeep

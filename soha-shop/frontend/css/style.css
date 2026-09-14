@@ -152,6 +152,38 @@ a { color: inherit; text-decoration: none; }
 }
 .calc-divider { height: 1px; background: var(--panel-2); margin: 8px 0 26px; }
 
+.product-preview {
+  background: var(--ink);
+  border: 1px solid var(--panel-2);
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 22px;
+}
+.preview-gallery {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  margin-bottom: 12px;
+}
+.preview-gallery img {
+  width: 72px;
+  height: 96px;
+  object-fit: cover;
+  border-radius: 8px;
+  flex-shrink: 0;
+  border: 1px solid var(--panel-2);
+}
+.preview-name { font-size: 1rem; font-weight: 700; margin-bottom: 8px; }
+.preview-desc {
+  color: var(--muted);
+  font-size: 0.85rem;
+  line-height: 1.7;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 .calc-result { text-align: center; margin-bottom: 10px; }
 .result-label { display: block; color: var(--muted); font-size: 0.9rem; margin-bottom: 6px; }
 .result-amount { font-size: 2.4rem; font-weight: 900; color: var(--gold); }
