@@ -47,6 +47,13 @@ db.exec(`
   )
 `);
 
+// مهاجرت: ستون images (آرایه JSON مسیرهای محلی گالری عکس‌ها، برای محصولات وارد شده از ترندیول)
+// روی دیتابیس‌های قدیمی‌تر که این ستون رو ندارن اضافه می‌شه
+const productColumns = db.prepare("PRAGMA table_info(products)").all().map((c) => c.name);
+if (!productColumns.includes('images')) {
+  db.exec('ALTER TABLE products ADD COLUMN images TEXT');
+}
+
 db.exec(`
   CREATE TABLE IF NOT EXISTS price_calculations (
     id INTEGER PRIMARY KEY AUTOINCREMENT,

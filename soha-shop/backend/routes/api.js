@@ -3,6 +3,7 @@ const router = express.Router();
 const db = require('../db/database');
 const { getSetting } = require('../db/database');
 const { convertToToman, getAllRates } = require('../services/currency');
+const { scrapeProductPage } = require('../services/productScraper');
 
 router.use(express.json());
 
@@ -13,6 +14,22 @@ router.get('/rates', (req, res) => {
     res.json({ success: true, rates });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// POST /api/product-preview - خوندن خودکار عکس/اسم/توضیحات/قیمت از لینک محصول
+// (فرم «محاسبه قیمت» تو صفحه اول، همون‌جایی که مشتری لینک محصول رو می‌ذاره)
+router.post('/product-preview', async (req, res) => {
+  const { url } = req.body;
+  if (!url) {
+    return res.status(400).json({ success: false, error: 'لینک محصول الزامی است.' });
+  }
+
+  try {
+    const product = await scrapeProductPage(url);
+    res.json({ success: true, product });
+  } catch (error) {
+    res.status(400).json({ success: false, error: error.message });
   }
 });
 

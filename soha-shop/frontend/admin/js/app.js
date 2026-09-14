@@ -170,6 +170,51 @@ document.getElementById('productSearch').addEventListener('input', (e) => {
   loadProducts(e.target.value);
 });
 
+// ===== وارد کردن محصول از ترندیول =====
+document.getElementById('importTrendyolBtn').addEventListener('click', async () => {
+  const input = document.getElementById('trendyolUrl');
+  const note = document.getElementById('importTrendyolNote');
+  const btn = document.getElementById('importTrendyolBtn');
+  const url = input.value.trim();
+
+  if (!url) {
+    note.style.color = 'var(--danger)';
+    note.textContent = '❌ لینک محصول ترندیول را وارد کنید.';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'در حال وارد کردن...';
+  note.textContent = '';
+
+  try {
+    const res = await fetch(`${API}/products/import-trendyol`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({ url }),
+    });
+    const data = await res.json();
+
+    if (data.success) {
+      const imageCount = data.product.images ? JSON.parse(data.product.images).length : 0;
+      note.style.color = 'var(--success)';
+      note.textContent = `✅ محصول «${data.product.product_name}» با ${imageCount} عکس از ترندیول وارد شد.`;
+      input.value = '';
+      loadProducts();
+    } else {
+      note.style.color = 'var(--danger)';
+      note.textContent = `❌ ${data.error}`;
+    }
+  } catch {
+    note.style.color = 'var(--danger)';
+    note.textContent = '❌ اتصال به سرور برقرار نشد.';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'وارد کردن از ترندیول';
+  }
+});
+
 // ===== سفارش‌ها =====
 const statusLabels = {
   pending: 'در انتظار',
